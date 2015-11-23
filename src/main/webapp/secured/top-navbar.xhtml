@@ -1,0 +1,20 @@
+<ui:component xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:h="http://xmlns.jcp.org/jsf/html"
+              xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <div class="navbar-fixed">
+        <nav>
+            <div class="nav-wrapper blue darken-3">
+                <ul class="hide-on-med-and-down blue darken-3">
+                    <li><a href="/secured/dashboards.xhtml">Dashboards</a></li>
+                    <li><a href="/secured/reports.xhtml">Reports</a></li>
+                    <li><h:link value="Projects" outcome="projects" /></li>
+                </ul>
+                <ul class="hide-on-med-and-down blue darken-3 right">
+                    <h:form>
+                        <li><h:commandLink action="#{loginController.logout}" value="Logout"  /></li>
+                    </h:form>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</ui:component>

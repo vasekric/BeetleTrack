@@ -1,0 +1,11 @@
+body {
+    background-color: #ddd;
+}
+.float-right a {
+    position: relative;
+    right: 50px;
+    bottom: 20px;
+}
+.hideWrapper input {
+    visibility: hidden;
+}

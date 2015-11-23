@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title>Register</title>
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <h:outputStylesheet library="css" name="materialize.min.css" />
+    <h:outputStylesheet library="css" name="style.css" />
+</h:head>
+<f:view>
+    <div class="" style="margin-top: 20em;">
+        <div class="row">
+            <div class="col s10 offset-s1 m2 offset-m5 l4 offset-l4">
+                <div class="card">
+                    <div class="card-content">
+                        <blockquote style="margin-left: -20px; margin-top: 0;">
+                            <span class="card-title red-text accent-2">Register</span>
+                        </blockquote>
+                        <h:form>
+                            <div class="row">
+                                <div class="input-field col s10 offset-s1">
+                                    <h:inputText id="nick_name" type="text" class="validate" value="#{user.username}" />
+                                    <h:outputLabel for="nick_name">Username</h:outputLabel>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s10 offset-s1">
+                                    <h:inputText id="fullName" type="text" class="validate" value="#{user.fullName}" />
+                                    <h:outputLabel for="fullName">Full Name</h:outputLabel>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s10 offset-s1">
+                                    <h:inputText id="email" type="email" class="validate" value="#{user.email}" />
+                                    <h:outputLabel for="email">Email</h:outputLabel>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s10 offset-s1">
+                                    <h:inputSecret id="password" type="password" class="validate" value="#{user.password}" />
+                                    <h:outputLabel for="password">Password</h:outputLabel>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col s12 center">
+                                    <!--<h:outputLink id="login" class="waves-effect waves-light btn red lighten-1" type="submit">Login</h:outputLink>-->
+                                    <a id="login" class="waves-effect waves-light btn red lighten-1">Register</a>
+                                    <div class="hideWrapper">
+                                        <h:commandButton id="loginCommandButton" action="#{loginController.register(user)}" hidden="hidden" />
+                                    </div>
+                                </div>
+                            </div>
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+            <div class="col s1 float-right">
+                <div class="row">
+                    <a class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">add</i></a>
+                </div>
+                <div class="row">
+                    <a class="btn-floating btn-large waves-effect waves-light red lighten-1">g+</a>
+                </div>
+                <div class="row">
+                    <a class="btn-floating btn-large waves-effect waves-light blue darken-3">fb</a>
+                </div>
+                <div class="row">
+                    <a class="btn-floating btn-large waves-effect waves-light light-blue lighten-1">t</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</f:view>
+<h:outputScript library="js" name="jquery-2.1.4.min.js" />
+<h:outputScript library="js" name="materialize.min.js" />
+<h:outputScript>
+    //trigger jsf login button
+    $('#login').click(function () {
+    $("input[name='j_idt7:loginCommandButton']").trigger("click");
+    })
+</h:outputScript>
+</html>

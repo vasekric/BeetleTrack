@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:head>
+    <title>Create Issue</title>
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+    <h:outputStylesheet library="css" name="materialize.min.css"/>
+    <h:outputStylesheet library="css" name="style.css"/>
+</h:head>
+<f:view>
+    <ui:include src="top-navbar.xhtml"/>
+
+    <div class="row">
+        <div class="col l10 offset-l1">
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title grey-text">Create Issue</span>
+                    <h:form>
+                        <div class="row center-align">
+                            <div class="col l6">
+                                <div class="row">
+                                    <div class="input-field col l12">
+                                        <h:inputText id="issue-name" type="text"
+                                                     class="validate" value="#{inputIssue.name}" >
+                                        </h:inputText>
+                                        <h:outputLabel for="issue-name">Issue Name</h:outputLabel>
+                                    </div>
+                                    <div class="input-field col l12">
+                                        <label for="description">Description</label>
+                                        <h:inputTextarea id="description"
+                                                         class="materialize-textarea validate"
+                                                         value="#{inputIssue.description}" />
+                                    </div>
+                                    <div class="input-field col l12">
+                                        <h:inputText id="tags" type="text" class="validate"
+                                                     value="#{inputIssue.tags}" />
+                                        <h:outputLabel for="tags">Tags</h:outputLabel>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col l6">
+                                <div class="input-field col s12">
+                                    <h:selectOneMenu>
+                                        <f:selectItem itemDisabled="true" noSelectionOption="true" itemLabel="Choose your option" />
+                                    </h:selectOneMenu>
+                                    <label>Project</label>
+                                </div>
+                                <div class="input-field col s12">
+                                    <h:selectOneMenu>
+                                        <f:selectItem itemDisabled="true" noSelectionOption="true" itemLabel="Choose your option" />
+                                    </h:selectOneMenu>
+                                    <label>Issue Parent</label>
+                                </div>
+                                <div class="input-field col s12">
+                                    <h:selectOneMenu>
+                                        <f:selectItem itemDisabled="true" noSelectionOption="true" itemLabel="Choose your option" />
+                                    </h:selectOneMenu>
+                                    <label>Type</label>
+                                </div>
+                                <div class="input-field col s12">
+                                    <h:selectOneMenu>
+                                        <f:selectItem itemDisabled="true" noSelectionOption="true" itemLabel="Choose your option" />
+                                    </h:selectOneMenu>
+                                    <label>Assigned To</label>
+                                </div>
+                                <div class="input-field col l12">
+                                    <h:inputText id="estimatedTime" type="text" class="validate"
+                                                 value="#{inputIssue.estimatedTime}" />
+                                    <h:outputLabel for="estimatedTime">Estimated To</h:outputLabel>
+                                </div>
+                            </div>
+                            <div class="row">
+                                 <!-- SUBMIT BUTTONS -->
+                                <c:if test="#{param['projectId'] != null}">
+                                    <h:commandLink action="#{issuesController.create(issueNode, param['projectId'])}"
+                                                   value="Create"
+                                                   styleClass="waves-effect waves-light btn">
+                                        <f:param name="projectId" value="#{param['projectId']}"/>
+                                    </h:commandLink>
+                                </c:if>
+                                <c:if test="#{param['issueId'] != null}">
+                                    <h:commandLink action="#{issuesController.createChild(issueNode, param['issueId'])}"
+                                                   value="Create"
+                                                   styleClass="waves-effect waves-light btn">
+                                        <f:param name="issueId" value="#{param['issueId']}"/>
+                                    </h:commandLink>
+                                </c:if>
+                            </div>
+                        </div>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+    </div>
+</f:view>
+<h:outputScript library="js" name="jquery-2.1.4.min.js"/>
+<h:outputScript library="js" name="materialize.min.js"/>
+<h:outputScript>
+    $(document).ready(function() {
+        $('select').material_select();
+    });
+</h:outputScript>
+</html>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="1.0">
+<persistence-unit name="beetletrack-persistence">
+    <!--<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>-->
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <properties>
+        <property name="hibernate.connection.url" value="jdbc:mysql://kraa.info:3306/beetletrack"/>
+        <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>
+        <property name="hibernate.connection.username" value="beetletrack"/>
+        <property name="hibernate.connection.password" value="JFLZ3bjhlpAegMhs"/>
+        <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
+        <property name="hibernate.archive.autodetection" value="class"/>
+        <property name="hibernate.show_sql" value="true"/>
+        <property name="hibernate.format_sql" value="true"/>
+        <property name="hibernate.hbm2ddl.auto" value="create"/>
+        <!--<property name="javax.persistence.schema-generation.database.action" value="create"/>-->
+    </properties>
+</persistence-unit>
+</persistence>
