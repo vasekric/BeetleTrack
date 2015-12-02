@@ -3,7 +3,7 @@ package cz.vasekric.beetletrack.connector.jdbcstore.repositories;
 import cz.vasekric.beetletrack.connector.jdbcstore.annotations.MySQLDependent;
 import cz.vasekric.beetletrack.connector.jdbcstore.mappers.FullUserRowMapper;
 import cz.vasekric.beetletrack.domain.models.UserDO;
-import cz.vasekric.beetletrack.service.connectors.UserRepository;
+import cz.vasekric.beetletrack.service.gateways.UserGateway;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -21,7 +21,7 @@ import java.util.HashMap;
 @Named
 @ApplicationScoped
 @MySQLDependent
-public class UserRepositoryImpl implements UserRepository {
+public class UserRepositoryImpl implements UserGateway {
 
     @Inject private FullUserRowMapper userMapper;
     @Inject private JdbcTemplate jdbcTemplate;

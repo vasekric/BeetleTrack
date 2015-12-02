@@ -15,8 +15,9 @@
     <ui:include src="top-navbar.xhtml"/>
     <c:if test="#{param['issueId'] != null}">
         <ui:param name="issues" value="#{issuesController.getIssueChildrens(param['issueId'])}"/>
+        <ui:param name="selfIssue" value="#{issuesController.getIssue(param['issueId'])}"/>
     </c:if>
-    <c:if test="#{param['issueId'] == null}">
+    <c:if test="#{param['projectId'] != null}">
         <ui:param name="issues" value="#{issuesController.getIssuesByProjectId(param['projectId'])}"/>
     </c:if>
 
@@ -28,7 +29,17 @@
                     <h:link value="Back To Project" outcome="issue">
                         <f:param name="projectId" value="#{param['projectId']}"/>
                     </h:link>
-                    <br/>
+                    <c:if test="#{param['issueId'] != null}">
+                        <div class="row">
+                            <div class="col l6">
+                                <span>Description</span>
+                                <p>#{selfIssue.description}</p>
+                            </div>
+                            <div class="col l6">
+
+                            </div>
+                        </div>
+                    </c:if>
 
                     <ui:repeat value="#{issues}" var="issue">
                         <div class="col s12 m4 l2">

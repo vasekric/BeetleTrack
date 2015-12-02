@@ -1,7 +1,7 @@
 package cz.vasekric.beetletrack.service;
 
 import cz.vasekric.beetletrack.domain.models.UserDO;
-import cz.vasekric.beetletrack.service.connectors.UserRepository;
+import cz.vasekric.beetletrack.service.gateways.UserGateway;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -14,7 +14,7 @@ import javax.inject.Named;
 @ApplicationScoped
 public class UserService {
 
-    @Inject private UserRepository userRepository;
+    @Inject private UserGateway userRepository;
 
     public UserDO register(UserDO user) {
         return userRepository.createUser(user);

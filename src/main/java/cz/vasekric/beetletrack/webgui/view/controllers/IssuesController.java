@@ -31,6 +31,12 @@ public class IssuesController implements Serializable {
     @Inject private IssueService issueService;
     @Inject private IssueMapper issueMapper;
 
+    public Issue getIssue(Integer id) {
+        final IssueDO issue = issueService.getIssue(id);
+        final Issue mappedIssue = issueMapper.map(issue);
+        return mappedIssue;
+    }
+
     public List<Issue> getIssuesByProjectId(Integer projectId) {
         List<IssueNodeDO> issueNodes = issueService.getAllByProjectId(projectId);
         final List<IssueDO> issues = issueNodes.stream()

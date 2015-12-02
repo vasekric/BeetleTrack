@@ -59,12 +59,13 @@ public class LoginController implements Serializable {
         }
     }
 
-    public void register(User user) {
+    public String register(User user) {
         final UserDO userDO = userMapper.map(user);
         final UserDO registeredUser = userService.register(userDO);
         final User mrUser = userMapper.map(userDO);
         this.isLoggedIn(mrUser);
 //        this.onLogin(mrUser);
+        return "secured/projects";
     }
 
     public void logout() {

@@ -3,7 +3,7 @@ package cz.vasekric.beetletrack.connector.jpastore;
 import cz.vasekric.beetletrack.domain.models.ProjectDO;
 import cz.vasekric.beetletrack.connector.jpastore.mappers.ProjectDAOMapper;
 import cz.vasekric.beetletrack.connector.jpastore.models.Project;
-import cz.vasekric.beetletrack.service.connectors.ProjectRepository;
+import cz.vasekric.beetletrack.service.gateways.ProjectGateway;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -17,7 +17,7 @@ import java.util.List;
  */
 //@Named
 //@ApplicationScoped
-public class ProjectRepositoryImpl implements ProjectRepository, Serializable {
+public class ProjectRepositoryImpl implements ProjectGateway, Serializable {
 
     @Inject private ProjectDAOMapper projectMapper;
     final EntityManager entityManager;

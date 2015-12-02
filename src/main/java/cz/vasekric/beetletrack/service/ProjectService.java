@@ -1,7 +1,7 @@
 package cz.vasekric.beetletrack.service;
 
 import cz.vasekric.beetletrack.domain.models.ProjectDO;
-import cz.vasekric.beetletrack.service.connectors.ProjectRepository;
+import cz.vasekric.beetletrack.service.gateways.ProjectGateway;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,7 +21,7 @@ import java.util.List;
 @Setter
 public class ProjectService implements Serializable {
 
-    @Inject private ProjectRepository projectRepository;
+    @Inject private ProjectGateway projectRepository;
 
     public ProjectDO createProject(ProjectDO project) {
         return projectRepository.save(project);

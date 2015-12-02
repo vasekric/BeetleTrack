@@ -24,6 +24,7 @@ public class ProjectRowMapper implements RowMapper<ProjectDO>{
         final String email = rs.getString("email");
         final Integer projectId = rs.getInt("project_id");
         final String name = rs.getString("project_name");
+        final String readme = rs.getString("readme");
 
         final UserDO owner = UserDO.builder()
                 .id(userId)
@@ -35,6 +36,7 @@ public class ProjectRowMapper implements RowMapper<ProjectDO>{
         return ProjectDO.builder()
                 .id(projectId)
                 .name(name)
+                .readme(readme)
                 .projectManager(owner)
                 .build();
     }

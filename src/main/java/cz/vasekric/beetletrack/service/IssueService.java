@@ -2,7 +2,7 @@ package cz.vasekric.beetletrack.service;
 
 import cz.vasekric.beetletrack.domain.models.IssueDO;
 import cz.vasekric.beetletrack.domain.models.IssueNodeDO;
-import cz.vasekric.beetletrack.service.connectors.IssueRepository;
+import cz.vasekric.beetletrack.service.gateways.IssueGateway;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -16,7 +16,7 @@ import java.util.List;
 @ApplicationScoped
 public class IssueService {
 
-    @Inject private IssueRepository issueRepository;
+    @Inject private IssueGateway issueRepository;
 
     public IssueDO create(IssueDO issue, Integer projectId) {
         return issueRepository.create(issue, projectId);

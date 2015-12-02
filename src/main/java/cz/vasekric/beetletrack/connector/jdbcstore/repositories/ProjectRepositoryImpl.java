@@ -3,7 +3,7 @@ package cz.vasekric.beetletrack.connector.jdbcstore.repositories;
 import cz.vasekric.beetletrack.connector.jdbcstore.annotations.MySQLDependent;
 import cz.vasekric.beetletrack.domain.models.ProjectDO;
 import cz.vasekric.beetletrack.connector.jdbcstore.mappers.ProjectRowMapper;
-import cz.vasekric.beetletrack.service.connectors.ProjectRepository;
+import cz.vasekric.beetletrack.service.gateways.ProjectGateway;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
@@ -21,7 +21,7 @@ import java.util.List;
 @Named
 @ApplicationScoped
 @MySQLDependent
-public class ProjectRepositoryImpl implements ProjectRepository, Serializable {
+public class ProjectRepositoryImpl implements ProjectGateway, Serializable {
 
     @Inject private ProjectRowMapper projectMapper;
     @Inject private JdbcTemplate jdbcTemplate;
@@ -31,17 +31,23 @@ public class ProjectRepositoryImpl implements ProjectRepository, Serializable {
     public void init() {
         jdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
             .withTableName("Project")
-            .usingColumns("name", "owner_id");
+            .usingColumns("name", "owner_id", "readme");
         jdbcInsert.setGeneratedKeyName("id");
     }
 
     @Override
     public ProjectDO save(ProjectDO project) {
+        final String sql = "INSERT INTO User_Project SET users_id=?, project_id=?";
+
         final HashMap<String, Object> params = new HashMap<>();
         params.put("name", project.getName());
         params.put("owner_id", project.getProjectManager().getId());
+        params.put("readme", project.getReadme());
 
         final int id = jdbcInsert.executeAndReturnKey(params).intValue();
+        project.getUsers()
+                .stream()
+                .forEach(user -> jdbcTemplate.update(sql, user.getId(), project.getId()));
 
         project.setId(id);
         return project;
@@ -49,7 +55,8 @@ public class ProjectRepositoryImpl implements ProjectRepository, Serializable {
 
     @Override
     public List<ProjectDO> findAll() {
-        final String sql = "SELECT p.id as project_id, p.name as project_name, u.id as user_id, username, u.fullName as full_name, u.email as email FROM Project p JOIN User u on owner_id = u.id";
+        final String sql = "SELECT p.id as project_id, p.name as project_name, u.id as user_id, username, u.fullName as full_name, u.email as email, readme " +
+                "FROM Project p JOIN User u on owner_id = u.id";
 
         final List<ProjectDO> projects = jdbcTemplate.query(sql, projectMapper);
 
@@ -58,7 +65,8 @@ public class ProjectRepositoryImpl implements ProjectRepository, Serializable {
 
     @Override
     public ProjectDO findById(Integer id) {
-        final String sql = "SELECT p.id as project_id, p.name as project_name, u.id as user_id, username, u.fullName as full_name, u.email as email FROM Project p JOIN User u on owner_id = u.id WHERE p.id=?";
+        final String sql = "SELECT p.id as project_id, p.name as project_name, u.id as user_id, username, u.fullName as full_name, u.email as email, readme " +
+                "FROM Project p JOIN User u on owner_id = u.id WHERE p.id=?";
 
         final ProjectDO project = jdbcTemplate.queryForObject(sql, new Object[]{id}, projectMapper);
 

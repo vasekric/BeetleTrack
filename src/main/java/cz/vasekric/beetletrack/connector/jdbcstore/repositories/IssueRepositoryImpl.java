@@ -4,7 +4,7 @@ import cz.vasekric.beetletrack.connector.jdbcstore.annotations.MySQLDependent;
 import cz.vasekric.beetletrack.connector.jdbcstore.mappers.IssueNodeRowMapper;
 import cz.vasekric.beetletrack.domain.models.IssueDO;
 import cz.vasekric.beetletrack.domain.models.IssueNodeDO;
-import cz.vasekric.beetletrack.service.connectors.IssueRepository;
+import cz.vasekric.beetletrack.service.gateways.IssueGateway;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
@@ -21,7 +21,7 @@ import java.util.List;
 @Named
 @ApplicationScoped
 @MySQLDependent
-public class IssueRepositoryImpl implements IssueRepository {
+public class IssueRepositoryImpl implements IssueGateway {
 
     @Inject private IssueNodeRowMapper issueNodeMapper;
     @Inject private JdbcTemplate jdbcTemplate;
