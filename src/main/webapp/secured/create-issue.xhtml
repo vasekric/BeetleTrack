@@ -44,31 +44,39 @@
                                 </div>
                             </div>
                             <div class="col l6">
-                                <div class="input-field col s12">
-                                    <h:selectOneMenu>
-                                        <f:selectItem itemDisabled="true" noSelectionOption="true" itemLabel="Choose your option" />
-                                    </h:selectOneMenu>
+                                <div class="col s12">
                                     <label>Project</label>
-                                </div>
-                                <div class="input-field col s12">
-                                    <h:selectOneMenu>
+                                    <h:selectOneMenu value="#{inputIssue.project}" styleClass="browser-default">
                                         <f:selectItem itemDisabled="true" noSelectionOption="true" itemLabel="Choose your option" />
+                                        <ui:repeat value="#{projectsController.projects}" var="project" >
+                                            <f:selectItem itemLabel="#{project.name}" itemValue="#{project.id}" />
+                                        </ui:repeat>
                                     </h:selectOneMenu>
+                                </div>
+                                <div class="col s12">
                                     <label>Issue Parent</label>
-                                </div>
-                                <div class="input-field col s12">
-                                    <h:selectOneMenu>
+                                    <h:selectOneMenu styleClass="browser-default">
                                         <f:selectItem itemDisabled="true" noSelectionOption="true" itemLabel="Choose your option" />
                                     </h:selectOneMenu>
+                                </div>
+                                <div class="col s12">
                                     <label>Type</label>
-                                </div>
-                                <div class="input-field col s12">
-                                    <h:selectOneMenu>
+                                    <h:selectOneMenu value="#{inputIssue.type}" styleClass="browser-default">
                                         <f:selectItem itemDisabled="true" noSelectionOption="true" itemLabel="Choose your option" />
+                                        <f:selectItem itemLabel="Epic" itemValue="epic" />
+                                        <f:selectItem itemLabel="User Story" itemValue="user_story" />
+                                        <f:selectItem itemLabel="Task" itemValue="task" />
                                     </h:selectOneMenu>
-                                    <label>Assigned To</label>
                                 </div>
-                                <div class="input-field col l12">
+                                <div class="col s12">
+                                    <label>Assigned To</label>
+                                    <h:selectOneMenu value="#{inputIssue.assignedTo}" styleClass="browser-default">
+                                        <f:selectItem itemDisabled="true" noSelectionOption="true" itemLabel="Choose your option" />
+                                        <f:selectItems value="#{userController.allUsers}" var="userItem" itemLabel="#{userItem.fullName}" itemValue="#{userItem.id}" >
+                                        </f:selectItems>
+                                    </h:selectOneMenu>
+                                </div>
+                                <div class="col l12">
                                     <h:inputText id="estimatedTime" type="text" class="validate"
                                                  value="#{inputIssue.estimatedTime}" />
                                     <h:outputLabel for="estimatedTime">Estimated To</h:outputLabel>
@@ -77,14 +85,14 @@
                             <div class="row">
                                  <!-- SUBMIT BUTTONS -->
                                 <c:if test="#{param['projectId'] != null}">
-                                    <h:commandLink action="#{issuesController.create(issueNode, param['projectId'])}"
+                                    <h:commandLink action="#{issuesController.create(inputIssue, param['projectId'])}"
                                                    value="Create"
                                                    styleClass="waves-effect waves-light btn">
                                         <f:param name="projectId" value="#{param['projectId']}"/>
                                     </h:commandLink>
                                 </c:if>
                                 <c:if test="#{param['issueId'] != null}">
-                                    <h:commandLink action="#{issuesController.createChild(issueNode, param['issueId'])}"
+                                    <h:commandLink action="#{issuesController.createChild(inputIssue, param['issueId'])}"
                                                    value="Create"
                                                    styleClass="waves-effect waves-light btn">
                                         <f:param name="issueId" value="#{param['issueId']}"/>

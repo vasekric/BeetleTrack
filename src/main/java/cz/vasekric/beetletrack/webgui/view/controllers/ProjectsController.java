@@ -39,15 +39,15 @@ public class ProjectsController implements Serializable {
 
         final ProjectDO project = projectService.getProject(projectId);
 
-        List<User> users = new ArrayList<>();
-        users.add(User.builder().id(2).username("n").build());
-        users.add(User.builder().id(3).username("e").build());
-        users.add(User.builder().id(4).username("k").build());
-        users.add(User.builder().id(5).username("d").build());
-        users.add(User.builder().id(6).username("o").build());
+//        List<User> users = new ArrayList<>();
+//        users.add(User.builder().id(2).username("n").build());
+//        users.add(User.builder().id(3).username("e").build());
+//        users.add(User.builder().id(4).username("k").build());
+//        users.add(User.builder().id(5).username("d").build());
+//        users.add(User.builder().id(6).username("o").build());
 
         final Project mappedProject = projectMapper.map(project);
-        mappedProject.setUsers(users);
+//        mappedProject.setUsers(users);
 
         return mappedProject;
     }
@@ -55,6 +55,9 @@ public class ProjectsController implements Serializable {
     public String create(Project project) {
         final User loggedUser = loginController.getLoggedUser();
         project.setProjectManager(loggedUser);
+        final ArrayList<User> users = new ArrayList<>();
+        users.add(loggedUser);
+        project.setUsers(users);
         final ProjectDO projectDO = projectMapper.map(project);
         projectService.createProject(projectDO);
         return "projects";

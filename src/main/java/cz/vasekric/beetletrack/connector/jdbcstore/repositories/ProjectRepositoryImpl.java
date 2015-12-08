@@ -3,11 +3,12 @@ package cz.vasekric.beetletrack.connector.jdbcstore.repositories;
 import cz.vasekric.beetletrack.connector.jdbcstore.annotations.MySQLDependent;
 import cz.vasekric.beetletrack.domain.models.ProjectDO;
 import cz.vasekric.beetletrack.connector.jdbcstore.mappers.ProjectRowMapper;
-import cz.vasekric.beetletrack.service.gateways.ProjectGateway;
+import cz.vasekric.beetletrack.domain.repository.ProjectRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.Singleton;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -18,10 +19,9 @@ import java.util.List;
 /**
  * Created by vasek on 18.10.2015.
  */
-@Named
-@ApplicationScoped
+//@Singleton
 @MySQLDependent
-public class ProjectRepositoryImpl implements ProjectGateway, Serializable {
+public class ProjectRepositoryImpl implements ProjectRepository, Serializable {
 
     @Inject private ProjectRowMapper projectMapper;
     @Inject private JdbcTemplate jdbcTemplate;

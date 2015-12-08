@@ -14,10 +14,10 @@
 <f:view>
     <ui:include src="top-navbar.xhtml"/>
     <c:if test="#{param['issueId'] != null}">
-        <ui:param name="issues" value="#{issuesController.getIssueChildrens(param['issueId'])}"/>
         <ui:param name="selfIssue" value="#{issuesController.getIssue(param['issueId'])}"/>
+        <ui:param name="issues" value="#{selfIssue.childrens}"/>
     </c:if>
-    <c:if test="#{param['projectId'] != null}">
+    <c:if test="#{param['issueId'] == null}">
         <ui:param name="issues" value="#{issuesController.getIssuesByProjectId(param['projectId'])}"/>
     </c:if>
 
@@ -25,8 +25,8 @@
         <div class="col l10 offset-l1">
             <div class="card">
                 <div class="card-content">
-                    <span class="card-title grey-text">Issue Name</span>
-                    <h:link value="Back To Project" outcome="issue">
+                    <span class="card-title grey-text">#{selfIssue.name}</span>
+                    <h:link value="Back To Project" outcome="project-detail">
                         <f:param name="projectId" value="#{param['projectId']}"/>
                     </h:link>
                     <c:if test="#{param['issueId'] != null}">
@@ -36,11 +36,70 @@
                                 <p>#{selfIssue.description}</p>
                             </div>
                             <div class="col l6">
+                                <div>
+                                    <c:if test="#{selfIssue.assignedTo != null}">
+                                        <p>Assigned To: #{selfIssue.assignedTo.fullName}</p>
+                                    </c:if>
+                                    <c:if test="#{selfIssue.assignedTo == null}">
+                                        <p>Not assigned</p>
+                                    </c:if>
+                                </div>
+                                <c:if test="#{selfIssue.parent != null}">
+                                    <span>
+                                        Issue Parent:
+                                        <h:link outcome="project-issues"
+                                                value="#{selfIssue.parent.name}">
+                                            <f:param name="issueId" value="#{selfIssue.parent.id}"/>
+                                            <f:param name="projectId" value="#{param['projectId']}"/>
+                                        </h:link>
+                                    </span>
+                                </c:if>
+                                <div>
+                                    <p>
+                                        Estimated Hours: #{selfIssue.estimatedTime.toHours()}
+                                    </p>
+                                    <p>
+                                        Logged Hours: #{selfIssue.totalSpentTime.toHours()}
+                                    </p>
+                                    <p>
+                                        Hours Left: #{selfIssue.estimatedTime.toHours() - selfIssue.totalSpentTime.toHours()}
+                                    </p>
+                                </div>
+                                <c:if test="#{selfIssue.class.simpleName eq 'IssueLeaf'}">
+                                    <h:form>
+                                        <div class="input-field col s12">
+                                            <c:if test="#{param['accept-hours'] == null}">
+                                            <h:inputText id="log_work" type="text" class="validate"
+                                                          binding="#{inputHours}" />
+                                            <label for="log_work">Log Work</label>
 
+                                            <h:commandLink styleClass="waves-effect waves-light btn" value="Add"
+                                                action="#{issuesController.logWork(inputHours.value, param['issueId'], param['projectId'], false)}" >
+                                                <f:param name="issueId" value="#{param['issueId']}"/>
+                                                <f:param name="projectId" value="#{param['projectId']}"/>
+                                            </h:commandLink>
+                                            </c:if>
+                                            <c:if test="#{param['accept-hours'] != null}">
+                                                <p>Do you really add #{param['accept-hours']} hours?</p>
+                                                <h:commandLink styleClass="waves-effect waves-light btn" value="I do"
+                                                               action="#{issuesController.logWork(param['accept-hours']+'h', param['issueId'], param['projectId'], true)}">
+                                                    <f:param name="issueId" value="#{param['issueId']}"/>
+                                                    <f:param name="projectId" value="#{param['projectId']}"/>
+                                                        </h:commandLink>
+                                                <h:link outcome="project-issues" styleClass="waves-effect waves-light btn" value="I don't">
+                                                    <f:param name="issueId" value="#{param['issueId']}"/>
+                                                    <f:param name="projectId" value="#{param['projectId']}"/>
+                                                </h:link>
+                                            </c:if>
+
+                                        </div>
+                                    </h:form>
+                                </c:if>
                             </div>
                         </div>
                     </c:if>
 
+                    <c:if test="#{not empty issues}">
                     <ui:repeat value="#{issues}" var="issue">
                         <div class="col s12 m4 l2">
                             <div class="card">
@@ -51,18 +110,35 @@
                                         <f:param name="projectId" value="#{param['projectId']}"/>
                                     </h:link>
                                 </div>
+                                <div style="padding-left: 10px;">
+                                    <p>#{issue.description}</p>
+                                    <c:if test="#{issue.assignedTo != null}">
+                                        <p>Assigned To: #{issue.assignedTo.fullName}</p>
+                                    </c:if>
+                                    <c:if test="#{issue.assignedTo == null}">
+                                        <p>Not assigned</p>
+                                    </c:if>
+                                </div>
                             </div>
                         </div>
                     </ui:repeat>
+                    </c:if>
+                    <c:if test="#{selfIssue.class.simpleName eq 'IssueNode'}">
                     <div class="col s12 m4 l2">
                         <div class="card">
                             <div class="card-content">
                                 <h:link outcome="create-issue" value="Create Issue">
-                                    <f:param name="projectId" value="#{param['projectId']}"/>
+                                    <c:if test="#{param['issueId'] == null}">
+                                        <f:param name="projectId" value="#{param['projectId']}"/>
+                                    </c:if>
+                                    <c:if test="#{param['issueId'] != null}">
+                                        <f:param name="issueId" value="#{param['issueId']}"/>
+                                    </c:if>
                                 </h:link>
                             </div>
                         </div>
                     </div>
+                    </c:if>
                 </div>
             </div>
         </div>

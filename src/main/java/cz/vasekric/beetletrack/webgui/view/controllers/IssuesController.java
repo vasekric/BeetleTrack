@@ -1,10 +1,15 @@
 package cz.vasekric.beetletrack.webgui.view.controllers;
 
+import cz.vasekric.beetletrack.connector.jpastore.models.*;
 import cz.vasekric.beetletrack.domain.models.IssueDO;
 import cz.vasekric.beetletrack.domain.models.IssueNodeDO;
 import cz.vasekric.beetletrack.service.IssueService;
 import cz.vasekric.beetletrack.webgui.view.mappers.IssueMapper;
 import cz.vasekric.beetletrack.webgui.view.models.*;
+import cz.vasekric.beetletrack.webgui.view.models.Issue;
+import cz.vasekric.beetletrack.webgui.view.models.IssueLeaf;
+import cz.vasekric.beetletrack.webgui.view.models.IssueNode;
+import cz.vasekric.beetletrack.webgui.view.models.Project;
 import lombok.Data;
 
 import javax.enterprise.context.SessionScoped;
@@ -16,6 +21,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.IOException;
 import java.io.Serializable;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,6 +40,8 @@ public class IssuesController implements Serializable {
 
     public Issue getIssue(Integer id) {
         final IssueDO issue = issueService.getIssue(id);
+        final Duration estimatedTime = issue.getEstimatedTime();
+        final Duration totalSpentTime = issue.getTotalSpentTime();
         final Issue mappedIssue = issueMapper.map(issue);
         return mappedIssue;
     }
@@ -46,11 +55,27 @@ public class IssuesController implements Serializable {
     }
 
     public List<Issue> getIssueChildrens(Integer issueId) {
-        final List<IssueNodeDO> issueDOs = issueService.getAllByIssueId(issueId);
-        final List<IssueDO> issues = issueDOs.stream()
-                .map(issueNodeDO -> (IssueDO) issueNodeDO)
-                .collect(Collectors.toList());
-        return issueMapper.mapDO(issues);
+        final IssueDO issue = issueService.getIssue(issueId);
+        if(issue instanceof IssueNodeDO) {
+            final List<IssueDO> childrens = ((IssueNodeDO) issue).getIssues();
+            final List<Issue> issues = issueMapper.mapDO(childrens);
+            return issues;
+        }
+        else {
+            return new ArrayList<>();
+        }
+    }
+
+    public String logWork(String loggedWork, Integer issueId, Integer projectId, boolean force) {
+        final String work = loggedWork.toUpperCase().trim();
+        final Duration duration = Duration.parse("PT"+work);
+        boolean fit = issueService.logWork(duration, issueId, force);
+        if(fit) {
+            return "project-issues.xhtml?issueId="+issueId+"&projectId="+projectId+"&faces-redirect=true";
+        }
+        else {
+            return "project-issues.xhtml?issueId="+issueId+"&projectId="+projectId+"&accept-hours="+duration.toHours()+"&faces-redirect=true";
+        }
     }
 
     public String create(InputIssue issue, Integer projectId) {
@@ -61,10 +86,11 @@ public class IssuesController implements Serializable {
         return "project-issues.xhtml?projectId="+projectId+"&faces-redirect=true";
     }
 
-    public void createChild(IssueNode issue, Integer issueId) {
+    public String createChild(InputIssue issue, Integer issueId) {
         final IssueDO issueDO = issueMapper.map(issue);
         final IssueDO createdIssue = issueService.createChild(issueDO, issueId);
-        System.out.println(createdIssue);
+
+        return "project-issues.xhtml?issueId="+issueId+"&projectId="+createdIssue.getProject().getId()+"&faces-redirect=true";
     }
 
 

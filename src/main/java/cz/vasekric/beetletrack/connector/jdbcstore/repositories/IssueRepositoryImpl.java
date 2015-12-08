@@ -4,24 +4,25 @@ import cz.vasekric.beetletrack.connector.jdbcstore.annotations.MySQLDependent;
 import cz.vasekric.beetletrack.connector.jdbcstore.mappers.IssueNodeRowMapper;
 import cz.vasekric.beetletrack.domain.models.IssueDO;
 import cz.vasekric.beetletrack.domain.models.IssueNodeDO;
-import cz.vasekric.beetletrack.service.gateways.IssueGateway;
+import cz.vasekric.beetletrack.domain.repository.IssueRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.Singleton;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 
 /**
  * Created by vasek on 11.11.2015.
  */
-@Named
-@ApplicationScoped
+//@Singleton
 @MySQLDependent
-public class IssueRepositoryImpl implements IssueGateway {
+public class IssueRepositoryImpl implements IssueRepository {
 
     @Inject private IssueNodeRowMapper issueNodeMapper;
     @Inject private JdbcTemplate jdbcTemplate;
@@ -79,6 +80,16 @@ public class IssueRepositoryImpl implements IssueGateway {
         final List<IssueNodeDO> issues = jdbcTemplate.query(sql, new Object[]{issueId}, issueNodeMapper);
 
         return issues;
+    }
+
+    @Override
+    public IssueDO findOne(Integer issueId) {
+        return null;
+    }
+
+    @Override
+    public void addHours(Duration duration, Integer issueId) {
+
     }
 
     @Override

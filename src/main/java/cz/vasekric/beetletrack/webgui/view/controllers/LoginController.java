@@ -32,7 +32,6 @@ public class LoginController implements Serializable {
 
     public boolean isLoggedIn(User user) {
         if(user.isAuthenticated()) {
-//            this.onLogin(user);
             return true;
         }
 
@@ -43,7 +42,6 @@ public class LoginController implements Serializable {
                 user.setPassword("");
                 user.setAuthenticated(processedUser.isAuthenticated());
                 user.setId(processedUser.getId());
-//                this.onLogin(user);
                 return true;
             }
         }
@@ -64,15 +62,12 @@ public class LoginController implements Serializable {
         final UserDO registeredUser = userService.register(userDO);
         final User mrUser = userMapper.map(userDO);
         this.isLoggedIn(mrUser);
-//        this.onLogin(mrUser);
-        return "secured/projects";
+        return "/secured/welcome.xhtml";
     }
 
     public void logout() {
-        this.user.setAuthenticated(false);
-        this.user.setUsername("");
-        this.user.setPassword("");
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+        context.invalidateSession();
         try {
             context.redirect(context.getRequestContextPath() + "/login.xhtml");
         } catch (IOException e) {

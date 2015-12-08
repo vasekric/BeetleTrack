@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.Duration;
 import java.time.Period;
 import java.util.List;
 
@@ -23,17 +24,17 @@ public class IssueLeafDO implements IssueDO {
     private String description;
     private UserDO assignedTo;
     private ProjectDO project;
-    private IssueDO parent;
+    private IssueNodeDO parent;
     private List<SpendTimeDO> spentTime;
-    private Period estimatedTime;
+    private Duration estimatedTime;
 
 
-    public Period getTotalSpentTime() {
+    public Duration getTotalSpentTime() {
         if(spentTime == null) {
-            return Period.ZERO;
+            return Duration.ZERO;
         }
         return spentTime.stream()
                 .map(SpendTimeDO::getTime)
-                .reduce(Period.ZERO, Period::plus);
+                .reduce(Duration.ZERO, Duration::plus);
     }
 }

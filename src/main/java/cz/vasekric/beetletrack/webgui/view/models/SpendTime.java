@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.Duration;
 import java.time.Period;
 
 /**
@@ -14,5 +15,5 @@ import java.time.Period;
 @Builder
 public class SpendTime {
     private final User user;
-    private final Period time;
+    private final Duration time;
 }

@@ -1,10 +1,13 @@
 package cz.vasekric.beetletrack.connector.jpastore.models;
 
-import lombok.Getter;
-import lombok.Setter;
+import cz.vasekric.beetletrack.domain.models.IssueDO;
+import cz.vasekric.beetletrack.domain.models.IssueTypeDO;
+import cz.vasekric.beetletrack.domain.models.UserDO;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,6 +15,9 @@ import java.util.List;
  */
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class IssueNode extends Issue {
     private String type;
@@ -21,6 +27,8 @@ public class IssueNode extends Issue {
     @ManyToOne
     private User assignedTo;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "parent")
+    @OneToMany(mappedBy = "parent")
     private List<Issue> childrens;
+
+    private Long estimatedTime;
 }

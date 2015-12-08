@@ -5,7 +5,7 @@ package cz.vasekric.beetletrack.domain.models;
  */
 public enum IssueTypeDO {
     EPIC("epic"),
-    USER_STORY("user story"),
+    USER_STORY("user_story"),
     TASK("task");
 
     private String text;

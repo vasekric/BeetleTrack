@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import java.time.Duration;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,14 +25,17 @@ public class IssueLeaf implements Issue {
     private String description;
     private User assignedTo;
     private List<SpendTime> spentTime = new ArrayList<>();
-    private Period estimatedTime;
+    private Duration estimatedTime = Duration.ZERO;
     private Issue parent;
 
     @Override
-    public Period getTotalSpentTime() {
+    public Duration getTotalSpentTime() {
+        if(spentTime == null || spentTime.isEmpty()) {
+            return Duration.ZERO;
+        }
         return spentTime.stream()
                     .map(SpendTime::getTime)
-                    .reduce(Period.ZERO, Period::plus);
+                    .reduce(Duration.ZERO, Duration::plus);
     }
 
     @Override

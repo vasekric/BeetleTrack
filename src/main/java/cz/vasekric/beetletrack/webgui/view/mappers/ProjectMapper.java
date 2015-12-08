@@ -37,6 +37,7 @@ public class ProjectMapper implements Serializable {
         final User owner = source.getProjectManager();
         final List<Issue> issues = source.getIssues();
         final UserDO ownerDO = userMapper.map(owner);
+        final List<UserDO> users = userMapper.mapDO(source.getUsers());
         final List<IssueDO> issueDOs = issueMapper.map(issues);
 
         return ProjectDO.builder()
@@ -44,21 +45,28 @@ public class ProjectMapper implements Serializable {
                         .name(name)
                         .projectManager(ownerDO)
                         .issues(issueDOs)
+                        .users(users)
+                        .readme(source.getReadme())
                         .build();
     }
+
+
     public Project map(ProjectDO source) {
         final Integer id = source.getId();
         final String name = source.getName();
         final UserDO ownerDO = source.getProjectManager();
         final List<IssueDO> issuesDO = source.getIssues();
         final User owner = userMapper.map(ownerDO);
+        final List<User> users = userMapper.map(source.getUsers());
         final List<Issue> issues = issueMapper.mapDO(issuesDO);
 
         return Project.builder()
                         .id(id)
                         .name(name)
                         .projectManager(owner)
+                        .users(users)
                         .issues(issues)
+                        .readme(source.getReadme())
                         .build();
     }
 }

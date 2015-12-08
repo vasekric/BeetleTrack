@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.Duration;
 import java.time.Period;
 
 /**
@@ -14,9 +15,5 @@ import java.time.Period;
 @Builder
 public class SpendTimeDO {
     private UserDO user;
-    private Period time;
-
-    public Period getTime() {
-        return time;
-    }
+    private Duration time;
 }

@@ -6,6 +6,9 @@ import cz.vasekric.beetletrack.webgui.view.models.User;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /**
  * Created by vasek on 18.10.2015.
@@ -13,6 +16,15 @@ import java.io.Serializable;
 @Named
 @ApplicationScoped
 public class UserMapper implements Serializable {
+
+    public List<UserDO> mapDO(List<User> source) {
+        return source.stream().map(this::map).collect(Collectors.toList());
+    }
+
+    public List<User> map(List<UserDO> source) {
+        return source.stream().map(this::map).collect(Collectors.toList());
+    }
+
     public UserDO map(User source) {
         if(source == null) {
             return null;

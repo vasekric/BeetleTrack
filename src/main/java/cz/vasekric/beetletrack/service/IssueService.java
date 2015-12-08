@@ -1,12 +1,17 @@
 package cz.vasekric.beetletrack.service;
 
+import cz.vasekric.beetletrack.connector.jpastore.models.IssueNode;
+import cz.vasekric.beetletrack.connector.jpastore.models.SpendTime;
 import cz.vasekric.beetletrack.domain.models.IssueDO;
+import cz.vasekric.beetletrack.domain.models.IssueLeafDO;
 import cz.vasekric.beetletrack.domain.models.IssueNodeDO;
-import cz.vasekric.beetletrack.service.gateways.IssueGateway;
+import cz.vasekric.beetletrack.domain.repository.IssueRepository;
 
+import javax.ejb.EJB;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.time.Duration;
 import java.util.List;
 
 /**
@@ -16,7 +21,7 @@ import java.util.List;
 @ApplicationScoped
 public class IssueService {
 
-    @Inject private IssueGateway issueRepository;
+    @EJB private IssueRepository issueRepository;
 
     public IssueDO create(IssueDO issue, Integer projectId) {
         return issueRepository.create(issue, projectId);
@@ -35,6 +40,24 @@ public class IssueService {
     }
 
     public IssueDO getIssue(Integer issueId) {
-        return null;
+        return issueRepository.findOne(issueId);
+    }
+
+    public boolean logWork(Duration duration, Integer issueId, boolean force) {
+        if(force) {
+            issueRepository.addHours(duration, issueId);
+            return true;
+        }
+        else {
+            final IssueDO issue = issueRepository.findOne(issueId);
+            final Duration estimatedTime = issue.getEstimatedTime() == null ? Duration.ZERO : issue.getEstimatedTime();
+            final Duration timeLeft = issue.getTotalSpentTime().plus(duration).minus(estimatedTime);
+            if(timeLeft.isNegative()) {
+                return false;
+            }
+            else {
+                return this.logWork(duration, issueId, true);
+            }
+        }
     }
 }

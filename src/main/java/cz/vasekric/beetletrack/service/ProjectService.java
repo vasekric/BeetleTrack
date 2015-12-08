@@ -1,10 +1,11 @@
 package cz.vasekric.beetletrack.service;
 
 import cz.vasekric.beetletrack.domain.models.ProjectDO;
-import cz.vasekric.beetletrack.service.gateways.ProjectGateway;
+import cz.vasekric.beetletrack.domain.repository.ProjectRepository;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.ejb.EJB;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -21,7 +22,7 @@ import java.util.List;
 @Setter
 public class ProjectService implements Serializable {
 
-    @Inject private ProjectGateway projectRepository;
+    @EJB private ProjectRepository projectRepository;
 
     public ProjectDO createProject(ProjectDO project) {
         return projectRepository.save(project);
@@ -32,6 +33,9 @@ public class ProjectService implements Serializable {
     }
 
     public ProjectDO getProject(Integer projectId) {
+        if(projectId == null) {
+            return new ProjectDO();
+        }
         return projectRepository.findById(projectId);
     }
 }

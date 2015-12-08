@@ -1,5 +1,6 @@
 package cz.vasekric.beetletrack.domain.models;
 
+import java.time.Duration;
 import java.time.Period;
 
 /**
@@ -8,8 +9,12 @@ import java.time.Period;
 public interface IssueDO {
     void setId(Integer id);
     Integer getId();
-    Period getTotalSpentTime();
-    Period getEstimatedTime();
+    Duration getTotalSpentTime();
+    Duration getEstimatedTime();
     String getName();
+    String getDescription();
+    IssueNodeDO getParent();
+    ProjectDO getProject();
+    UserDO getAssignedTo();
 }
 

@@ -1,5 +1,7 @@
 package cz.vasekric.beetletrack.connector.jpastore.models;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,7 +13,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class Issue {
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,4 +24,20 @@ public abstract class Issue {
 
     @ManyToOne
     private Issue parent;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Issue issue = (Issue) o;
+
+        return !(id != null ? !id.equals(issue.id) : issue.id != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
 }

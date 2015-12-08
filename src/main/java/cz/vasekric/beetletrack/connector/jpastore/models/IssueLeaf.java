@@ -1,11 +1,11 @@
 package cz.vasekric.beetletrack.connector.jpastore.models;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import java.time.Duration;
 import java.time.Period;
 import java.util.List;
 
@@ -15,6 +15,9 @@ import java.util.List;
 
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class IssueLeaf extends Issue {
 
@@ -28,5 +31,16 @@ public class IssueLeaf extends Issue {
     @OneToMany(mappedBy = "issue")
     private List<SpendTime> spentTime;
 
-    private Period estimatedTime;
+    private Long estimatedTime;
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

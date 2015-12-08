@@ -1,8 +1,7 @@
 package cz.vasekric.beetletrack.connector.jpastore.models;
 
 import cz.vasekric.beetletrack.domain.models.UserDO;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -13,12 +12,16 @@ import java.util.List;
  */
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
+    @Column(length = 10000)
     private String readme;
 
     @ManyToOne

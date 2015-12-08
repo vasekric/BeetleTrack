@@ -1,5 +1,6 @@
 package cz.vasekric.beetletrack.webgui.view.models;
 
+import java.time.Duration;
 import java.time.Period;
 import java.util.List;
 
@@ -14,24 +15,12 @@ public interface Issue {
     boolean isLeaf();
     boolean isNode();
     Issue getParent();
+    String getDescription();
+    User getAssignedTo();
 
-    default Period getEstimatedTime() {
-        if(this.hasChildrens()) {
-            return getChildrens().stream()
-                        .map(Issue::getEstimatedTime)
-                        .reduce(Period.ZERO, Period::plus);
-        }
-        return Period.ZERO;
-    }
+    Duration getEstimatedTime();
 
-    default Period getTotalSpentTime() {
-        if(this.hasChildrens()) {
-            return getChildrens().stream()
-                        .map(Issue::getTotalSpentTime)
-                        .reduce(Period.ZERO, Period::plus);
-        }
-        return Period.ZERO;
-    }
+    Duration getTotalSpentTime();
 
     default boolean hasParent() {
         return this.getParent() != null;

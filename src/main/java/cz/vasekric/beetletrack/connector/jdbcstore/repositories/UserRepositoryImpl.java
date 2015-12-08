@@ -3,25 +3,26 @@ package cz.vasekric.beetletrack.connector.jdbcstore.repositories;
 import cz.vasekric.beetletrack.connector.jdbcstore.annotations.MySQLDependent;
 import cz.vasekric.beetletrack.connector.jdbcstore.mappers.FullUserRowMapper;
 import cz.vasekric.beetletrack.domain.models.UserDO;
-import cz.vasekric.beetletrack.service.gateways.UserGateway;
+import cz.vasekric.beetletrack.domain.repository.UserRepository;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.Singleton;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by vasek on 10.11.2015.
  */
-@Named
-@ApplicationScoped
+//@Singleton
 @MySQLDependent
-public class UserRepositoryImpl implements UserGateway {
+public class UserRepositoryImpl implements UserRepository {
 
     @Inject private FullUserRowMapper userMapper;
     @Inject private JdbcTemplate jdbcTemplate;
@@ -66,6 +67,15 @@ public class UserRepositoryImpl implements UserGateway {
         return user;
     }
 
+    @Override
+    public List<UserDO> findAllUsers() {
+        return null;
+    }
+
+    @Override
+    public UserDO findUser(Integer id) {
+        return null;
+    }
 
 
 }

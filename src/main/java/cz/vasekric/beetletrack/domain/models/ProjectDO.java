@@ -20,8 +20,7 @@ public class ProjectDO {
     private String name;
     private String readme;
     private UserDO projectManager;
-    private List<User> users = new ArrayList<>();
+    private List<UserDO> users = new ArrayList<>();
     private List<IssueDO> issues = new ArrayList<>();
-
 
 }

@@ -4,16 +4,15 @@ import cz.vasekric.beetletrack.domain.models.*;
 import cz.vasekric.beetletrack.service.IssueService;
 import cz.vasekric.beetletrack.service.ProjectService;
 import cz.vasekric.beetletrack.service.UserService;
-import cz.vasekric.beetletrack.webgui.view.models.InputIssue;
-import cz.vasekric.beetletrack.webgui.view.models.Issue;
-import cz.vasekric.beetletrack.webgui.view.models.IssueLeaf;
-import cz.vasekric.beetletrack.webgui.view.models.IssueNode;
+import cz.vasekric.beetletrack.webgui.view.models.*;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.time.Duration;
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,10 +27,12 @@ public class IssueMapper implements Serializable {
     @Inject private UserService userService;
     @Inject private ProjectService projectService;
     @Inject private IssueService issueService;
+    @Inject private UserMapper userMapper;
+    @Inject private SpendTimeMapper spendTimeMapper;
 
     public List<IssueDO> map(List<Issue> source) {
         if(source == null) {
-            return null;
+            return new ArrayList<>();
         }
         return source.stream()
                      .map(this::map)
@@ -40,7 +41,7 @@ public class IssueMapper implements Serializable {
 
     public List<Issue> mapDO(List<IssueDO> source) {
         if(source == null) {
-            return null;
+            return new ArrayList<>();
         }
         return source.stream()
                 .map(this::map)
@@ -48,6 +49,9 @@ public class IssueMapper implements Serializable {
     }
 
     public IssueDO map(Issue source) {
+        if(source == null) {
+            return null;
+        }
         final IssueDO issue;
         if(source instanceof IssueNode) {
             issue = IssueNodeDO.builder()
@@ -63,17 +67,37 @@ public class IssueMapper implements Serializable {
         return issue;
     }
     public Issue map(IssueDO source) {
+        if(source == null) {
+            return null;
+        }
+        final Issue parent = this.map(source.getParent());
+        final User assignedTo = userMapper.map(source.getAssignedTo());
+        final Duration estimatedTime = source.getEstimatedTime();
         final Issue issue;
         if(source instanceof IssueNodeDO) {
+            final List<IssueDO> issues = ((IssueNodeDO) source).getIssues();
+            final List<Issue> children = this.mapDO(issues);
             issue = IssueNode.builder()
                     .id(source.getId())
                     .name(source.getName())
+                    .description(source.getDescription())
+                    .parent(parent)
+                    .childrens(children)
+                    .estimatedTime(estimatedTime)
+                    .assignedTo(assignedTo)
                     .build();
         }
         else {
+            final List<SpendTimeDO> spentTime = ((IssueLeafDO) source).getSpentTime();
+            final List<SpendTime> spendTimeList = spendTimeMapper.mapDO(spentTime);
             issue = IssueLeaf.builder()
                     .id(source.getId())
                     .name(source.getName())
+                    .description(source.getDescription())
+                    .parent(parent)
+                    .estimatedTime(estimatedTime)
+                    .spentTime(spendTimeList)
+                    .assignedTo(assignedTo)
                     .build();
         }
         //TODO: implements
@@ -81,16 +105,23 @@ public class IssueMapper implements Serializable {
     }
 
     public IssueDO map(InputIssue source) {
+        if(source == null) {
+            return null;
+        }
         final List<String> tags = Arrays.asList(source.getTags().split(","));
         final Integer userId = source.getAssignedTo();
         final UserDO user = userService.getUserById(userId);
-        final String estimatedTimeStr = source.getEstimatedTime();
-        //TODO: map estimatedTime
-        Period estimatedTime = Period.ZERO;
         final Integer projectId = source.getParent();
         final Integer issueId = source.getProject();
-        final ProjectDO project = projectService.getProject(projectId);
-        final IssueDO parent = issueService.getIssue(issueId);
+        ProjectDO project = null;
+        if(projectId != null) {
+            project = projectService.getProject(projectId);
+        }
+        IssueDO parent = null;
+        if(issueId != null) {
+            parent = issueService.getIssue(issueId);
+        }
+
 
         final IssueTypeDO issueType = IssueTypeDO.fromString(source.getType());
         if (issueType.equals(IssueTypeDO.EPIC) || issueType.equals(IssueTypeDO.USER_STORY)) {
@@ -98,9 +129,9 @@ public class IssueMapper implements Serializable {
                         .name(source.getName())
                         .description(source.getDescription())
                         .assignedTo(user)
-                        .estimatedTime(estimatedTime)
-                        .parent(parent)
+                        .parent((IssueNodeDO) parent)
                         .project(project)
+                        .estimatedTime(Duration.parse("PT"+source.getEstimatedTime().toUpperCase()))
                         .type(issueType)
                         .build();
         } else {
@@ -108,9 +139,9 @@ public class IssueMapper implements Serializable {
                         .name(source.getName())
                         .description(source.getDescription())
                         .assignedTo(user)
-                        .estimatedTime(estimatedTime)
-                        .parent(parent)
+                        .parent((IssueNodeDO) parent)
                         .project(project)
+                        .estimatedTime(Duration.parse("PT"+source.getEstimatedTime().toUpperCase()))
                         .type(issueType)
                         .build();
         }

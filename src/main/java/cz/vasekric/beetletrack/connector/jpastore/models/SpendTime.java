@@ -1,9 +1,9 @@
 package cz.vasekric.beetletrack.connector.jpastore.models;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
+import java.time.Duration;
 import java.time.Period;
 
 /**
@@ -11,6 +11,9 @@ import java.time.Period;
  */
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class SpendTime {
 
@@ -21,8 +24,8 @@ public class SpendTime {
     @ManyToOne
     private User user;
 
-    private Period time;
+    private Long time;
 
     @ManyToOne
-    private IssueLeaf issue;
+    private Issue issue;
 }

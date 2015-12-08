@@ -14,7 +14,7 @@ import java.sql.SQLException;
  */
 @Named
 @ApplicationScoped
-public class ProjectRowMapper implements RowMapper<ProjectDO>{
+public class ProjectRowMapper implements RowMapper<ProjectDO> {
 
     @Override
     public ProjectDO mapRow(ResultSet rs, int rowNum) throws SQLException {
