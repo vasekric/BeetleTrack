@@ -6,6 +6,7 @@ import cz.vasekric.beetletrack.webgui.view.models.User;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,10 +18,16 @@ import java.util.stream.Collectors;
 public class UserMapper implements Serializable {
 
     public List<UserDO> mapDO(List<User> source) {
+        if(source == null) {
+            return new ArrayList<>();
+        }
         return source.stream().map(this::map).collect(Collectors.toList());
     }
 
     public List<User> map(List<UserDO> source) {
+        if(source == null) {
+            return new ArrayList<>();
+        }
         return source.stream().map(this::map).collect(Collectors.toList());
     }
 

@@ -4,7 +4,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
 <h:head>
     <title>Issues</title>
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
@@ -20,11 +21,11 @@
     <c:if test="#{param['issueId'] == null}">
         <ui:param name="issues" value="#{issuesController.getIssuesByProjectId(param['projectId'])}"/>
     </c:if>
-
     <div class="row">
         <div class="col l10 offset-l1">
             <div class="card">
                 <div class="card-content">
+                    <h:messages  />
                     <span class="card-title grey-text">#{selfIssue.name}</span>
                     <h:link value="Back To Project" outcome="project-detail">
                         <f:param name="projectId" value="#{param['projectId']}"/>
@@ -70,7 +71,10 @@
                                         <div class="input-field col s12">
                                             <c:if test="#{param['accept-hours'] == null}">
                                             <h:inputText id="log_work" type="text" class="validate"
-                                                          binding="#{inputHours}" />
+                                                         required="true"
+                                                         binding="#{inputHours}">
+                                                <f:validator binding="#{logWorkValidator}" />
+                                            </h:inputText>
                                             <label for="log_work">Log Work</label>
 
                                             <h:commandLink styleClass="waves-effect waves-light btn" value="Add"

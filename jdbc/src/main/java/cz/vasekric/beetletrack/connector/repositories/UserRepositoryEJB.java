@@ -11,16 +11,14 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.inject.Named;
 import java.util.HashMap;
 import java.util.List;
 
 /**
  * Created by vasek on 10.11.2015.
  */
-//@Singleton
+@Singleton
 @MySQLDependent
 public class UserRepositoryEJB implements UserRepository {
 
@@ -54,7 +52,7 @@ public class UserRepositoryEJB implements UserRepository {
 
     @Override
     public UserDO authenticate(UserDO user) {
-        final String sql = "SELECT * from User where username=?";
+        final String sql = "SELECT * FROM User WHERE username=?";
         try {
             final UserDO selectedUser = jdbcTemplate.queryForObject(sql, new Object[]{user.getUsername()}, userMapper);
             final boolean authenticated = BCrypt.checkpw(user.getPassword(), selectedUser.getPassword());
@@ -69,12 +67,16 @@ public class UserRepositoryEJB implements UserRepository {
 
     @Override
     public List<UserDO> findAllUsers() {
-        return null;
+        final String sql = "SELECT * FROM User";
+        final List<UserDO> users = jdbcTemplate.query(sql, userMapper);
+        return users;
     }
 
     @Override
     public UserDO findUser(Integer id) {
-        return null;
+        final String sql = "SELECT * FROM User WHERE id=?";
+        final UserDO user = jdbcTemplate.queryForObject(sql, new Object[]{id}, userMapper);
+        return user;
     }
 
 

@@ -19,7 +19,8 @@ import java.util.List;
 @Stateless
 public class UserServiceEJB implements UserService, Serializable {
 
-    @EJB(mappedName = "java:jboss/exported/beetletrack.jpa-exploded/UserRepositoryEJB!cz.vasekric.beetletrack.domain.repository.UserRepository")
+//    @EJB(mappedName = "java:jboss/exported/beetletrack.jpa-exploded/UserRepositoryEJB!cz.vasekric.beetletrack.domain.repository.UserRepository")
+    @EJB(mappedName = "java:jboss/exported/beetletrack.jdbc-exploded/UserRepositoryEJB!cz.vasekric.beetletrack.domain.repository.UserRepository")
     private UserRepository userRepository;
 
     public UserDO register(UserDO user) {

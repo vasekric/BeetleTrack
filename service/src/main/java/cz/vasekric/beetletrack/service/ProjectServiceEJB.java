@@ -22,7 +22,8 @@ import java.util.List;
 @Stateless
 public class ProjectServiceEJB implements ProjectService, Serializable {
 
-    @EJB(mappedName = "java:jboss/exported/beetletrack.jpa-exploded/ProjectRepositoryEJB!cz.vasekric.beetletrack.domain.repository.ProjectRepository")
+//    @EJB(mappedName = "java:jboss/exported/beetletrack.jpa-exploded/ProjectRepositoryEJB!cz.vasekric.beetletrack.domain.repository.ProjectRepository")
+    @EJB(mappedName = "java:jboss/exported/beetletrack.jdbc-exploded/ProjectRepositoryEJB!cz.vasekric.beetletrack.domain.repository.ProjectRepository")
     private ProjectRepository projectRepository;
 
     @Override

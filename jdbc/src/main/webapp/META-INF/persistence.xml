@@ -7,10 +7,6 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <jta-data-source>java:/jboss/datasources/BeetleTrackMaria</jta-data-source>
         <properties>
-            <!--<property name="hibernate.connection.url" value="jdbc:mysql://kraa.info:3306/beetletrack"/>-->
-            <!--<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>-->
-            <!--<property name="hibernate.connection.username" value="beetletrack"/>-->
-            <!--<property name="hibernate.connection.password" value="JFLZ3bjhlpAegMhs"/>-->
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>

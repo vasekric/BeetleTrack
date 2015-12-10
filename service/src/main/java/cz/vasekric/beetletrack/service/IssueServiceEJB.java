@@ -17,14 +17,15 @@ import java.util.List;
 @Stateless
 public class IssueServiceEJB implements IssueService, Serializable {
 
-    @EJB(mappedName = "java:jboss/exported/beetletrack.jpa-exploded/IssueRepositoryEJB!cz.vasekric.beetletrack.domain.repository.IssueRepository")
+//    @EJB(mappedName = "java:jboss/exported/beetletrack.jpa-exploded/IssueRepositoryEJB!cz.vasekric.beetletrack.domain.repository.IssueRepository")
+    @EJB(mappedName = "java:jboss/exported/beetletrack.jdbc-exploded/IssueRepositoryEJB!cz.vasekric.beetletrack.domain.repository.IssueRepository")
     private IssueRepository issueRepository;
 
     public IssueDO create(IssueDO issue, Integer projectId) {
         return issueRepository.create(issue, projectId);
     }
 
-    public List<IssueNodeDO> getAllByProjectId(Integer projectId) {
+    public List<IssueDO> getAllByProjectId(Integer projectId) {
         return issueRepository.findAllByProjectId(projectId);
     }
 
@@ -32,7 +33,7 @@ public class IssueServiceEJB implements IssueService, Serializable {
         return issueRepository.createChild(issueDO, issueId);
     }
 
-    public List<IssueNodeDO> getAllByIssueId(Integer issueId) {
+    public List<IssueDO> getAllByIssueId(Integer issueId) {
         return issueRepository.findAllByIssueId(issueId);
     }
 

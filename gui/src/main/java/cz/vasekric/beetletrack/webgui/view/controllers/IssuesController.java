@@ -42,7 +42,7 @@ public class IssuesController implements Serializable {
     }
 
     public List<Issue> getIssuesByProjectId(Integer projectId) {
-        List<IssueNodeDO> issueNodes = issueService.getAllByProjectId(projectId);
+        List<IssueDO> issueNodes = issueService.getAllByProjectId(projectId);
         final List<IssueDO> issues = issueNodes.stream()
                 .map(issueNodeDO -> (IssueDO) issueNodeDO)
                 .collect(Collectors.toList());

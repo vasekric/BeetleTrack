@@ -15,11 +15,11 @@ import java.util.List;
 public interface IssueRepository {
     IssueDO create(IssueDO issue, Integer projectId);
 
-    List<IssueNodeDO> findAllByProjectId(Integer projectId);
+    List<IssueDO> findAllByProjectId(Integer projectId);
 
     IssueDO createChild(IssueDO issueDO, Integer issueId);
 
-    List<IssueNodeDO> findAllByIssueId(Integer issueId);
+    List<IssueDO> findAllByIssueId(Integer issueId);
 
     IssueDO findOne(Integer issueId);
 

@@ -14,9 +14,9 @@ import java.util.List;
 public interface IssueService {
 
      IssueDO create(IssueDO issue, Integer projectId);
-     List<IssueNodeDO> getAllByProjectId(Integer projectId);
+     List<IssueDO> getAllByProjectId(Integer projectId);
      IssueDO createChild(IssueDO issueDO, Integer issueId);
-     List<IssueNodeDO> getAllByIssueId(Integer issueId);
+     List<IssueDO> getAllByIssueId(Integer issueId);
      IssueDO getIssue(Integer issueId);
     boolean logWork(Duration duration, Integer issueId, boolean force);
 }

@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Created by vasek on 18.10.2015.
  */
-//@Singleton
+@Singleton
 @MySQLDependent
 public class ProjectRepositoryEJB implements ProjectRepository, Serializable {
 
@@ -30,9 +30,9 @@ public class ProjectRepositoryEJB implements ProjectRepository, Serializable {
     @PostConstruct
     public void init() {
         jdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
-            .withTableName("Project")
-            .usingColumns("name", "owner_id", "readme");
-        jdbcInsert.setGeneratedKeyName("id");
+                .withTableName("Project")
+                .usingColumns("name", "owner_id", "readme")
+                .usingGeneratedKeyColumns("id");
     }
 
     @Override
