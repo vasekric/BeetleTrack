@@ -1,9 +1,10 @@
-package endpoints;
+package cz.vasekric.beetletrack.restapi.endpoints;
 
+import cz.vasekric.beetletrack.api.models.IssueCommon;
 import cz.vasekric.beetletrack.domain.models.IssueDO;
-import cz.vasekric.beetletrack.domain.models.ProjectDO;
 import cz.vasekric.beetletrack.domain.service.IssueService;
-import cz.vasekric.beetletrack.domain.service.ProjectService;
+import cz.vasekric.beetletrack.restapi.mappers.IssueMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ejb.EJB;
@@ -20,9 +21,12 @@ public class IssueController {
     @EJB(mappedName = "java:jboss/exported/beetletrack.service-exploded/IssueServiceEJB!cz.vasekric.beetletrack.domain.service.IssueService")
     private IssueService issueService;
 
+    @Autowired private IssueMapper issueMapper;
+
     @RequestMapping("/{id}")
-    public IssueDO getIssue(@PathVariable Integer id) {
-        return issueService.getIssue(id);
+    public IssueCommon getIssue(@PathVariable Integer id) {
+        final IssueDO issue = issueService.getIssue(id);
+        return issueMapper.map(issue);
     }
 
     @RequestMapping(value = "/logwork/{issueId}",
@@ -38,8 +42,9 @@ public class IssueController {
     }
 
     @RequestMapping("/children/{id}")
-    public List<IssueDO> getChildren(@PathVariable Integer id) {
-        return issueService.getAllByIssueId(id);
+    public List<IssueCommon> getChildren(@PathVariable Integer id) {
+        final List<IssueDO> children = issueService.getAllByIssueId(id);
+        return issueMapper.map(children);
     }
 
     @RequestMapping(value = "/project/{projectId}",
@@ -49,7 +54,8 @@ public class IssueController {
     }
 
     @RequestMapping("/project/{projectId}")
-    public List<IssueDO> getIssuesByProject(@PathVariable Integer projectId) {
-        return issueService.getAllByProjectId(projectId);
+    public List<IssueCommon> getIssuesByProject(@PathVariable Integer projectId) {
+        final List<IssueDO> all = issueService.getAllByProjectId(projectId);
+        return issueMapper.map(all);
     }
 }

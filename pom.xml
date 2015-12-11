@@ -14,6 +14,7 @@
         <module>domain</module>
         <module>jdbc</module>
         <module>restapi</module>
+        <module>api</module>
     </modules>
     <packaging>pom</packaging>
 

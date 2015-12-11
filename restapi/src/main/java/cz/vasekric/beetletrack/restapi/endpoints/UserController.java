@@ -1,8 +1,6 @@
-package endpoints;
+package cz.vasekric.beetletrack.restapi.endpoints;
 
-import cz.vasekric.beetletrack.domain.models.ProjectDO;
 import cz.vasekric.beetletrack.domain.models.UserDO;
-import cz.vasekric.beetletrack.domain.service.ProjectService;
 import cz.vasekric.beetletrack.domain.service.UserService;
 import org.springframework.web.bind.annotation.*;
 

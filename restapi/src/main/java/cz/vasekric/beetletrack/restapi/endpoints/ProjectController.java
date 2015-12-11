@@ -1,9 +1,7 @@
-package endpoints;
+package cz.vasekric.beetletrack.restapi.endpoints;
 
 import cz.vasekric.beetletrack.domain.models.ProjectDO;
 import cz.vasekric.beetletrack.domain.service.ProjectService;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ejb.EJB;

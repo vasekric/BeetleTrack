@@ -14,13 +14,18 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
-        <start-class>cz.vasekric.beetletrack.endpoints.Application</start-class>
+        <start-class>cz.vasekric.beetletrack.cz.vasekric.beetletrack.restapi.Application</start-class>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>cz.vasekric</groupId>
             <artifactId>beetletrack.domain</artifactId>
+            <version>0.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>cz.vasekric</groupId>
+            <artifactId>beetletrack.api</artifactId>
             <version>0.3.0</version>
         </dependency>
         <dependency>
