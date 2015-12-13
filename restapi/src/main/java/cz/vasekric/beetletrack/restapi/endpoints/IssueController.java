@@ -1,5 +1,6 @@
 package cz.vasekric.beetletrack.restapi.endpoints;
 
+import cz.vasekric.beetletrack.api.models.Issue;
 import cz.vasekric.beetletrack.api.models.IssueCommon;
 import cz.vasekric.beetletrack.domain.models.IssueDO;
 import cz.vasekric.beetletrack.domain.service.IssueService;
@@ -37,8 +38,9 @@ public class IssueController {
 
     @RequestMapping(value = "/children/{parentId}",
                     method = RequestMethod.POST)
-    public IssueDO createIssueChild(@RequestBody IssueDO issue, @PathVariable Integer parentId) {
-        return issueService.createChild(issue, parentId);
+    public IssueCommon createIssueChild(@RequestBody IssueCommon issue, @PathVariable Integer parentId) {
+        final IssueDO child = issueService.createChild(issueMapper.map(issue), parentId);
+        return issueMapper.map(child);
     }
 
     @RequestMapping("/children/{id}")
@@ -49,8 +51,9 @@ public class IssueController {
 
     @RequestMapping(value = "/project/{projectId}",
                     method = RequestMethod.POST)
-    public IssueDO createIssue(@RequestBody IssueDO issue, @PathVariable Integer projectId) {
-        return issueService.create(issue, projectId);
+    public IssueCommon createIssue(@RequestBody IssueCommon issue, @PathVariable Integer projectId) {
+        final IssueDO issueDO = issueService.create(issueMapper.map(issue), projectId);
+        return issueMapper.map(issueDO);
     }
 
     @RequestMapping("/project/{projectId}")

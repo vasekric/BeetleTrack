@@ -1,7 +1,10 @@
 package cz.vasekric.beetletrack.restapi.endpoints;
 
+import cz.vasekric.beetletrack.api.models.User;
 import cz.vasekric.beetletrack.domain.models.UserDO;
 import cz.vasekric.beetletrack.domain.service.UserService;
+import cz.vasekric.beetletrack.restapi.mappers.UserMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ejb.EJB;
@@ -17,25 +20,30 @@ public class UserController {
     @EJB(mappedName = "java:jboss/exported/beetletrack.service-exploded/UserServiceEJB!cz.vasekric.beetletrack.domain.service.UserService")
     private UserService userService;
 
+    @Autowired private UserMapper userMapper;
+
     @RequestMapping("/{id}")
-    public UserDO getUser(@PathVariable Integer id) {
-        return userService.getUserById(id);
+    public User getUser(@PathVariable Integer id) {
+        final UserDO userById = userService.getUserById(id);
+        return userMapper.map(userById);
     }
 
     @RequestMapping("/all")
-    public List<UserDO> getAllUser() {
-        return userService.getAllUsers();
+    public List<User> getAllUser() {
+        final List<UserDO> allUsers = userService.getAllUsers();
+        return userMapper.map(allUsers);
     }
 
     @RequestMapping(value = "/authenticate",
                     method = RequestMethod.POST)
-    public UserDO authenticate(@RequestBody UserDO user) {
-        return userService.authenticate(user);
+    public User authenticate(@RequestBody User user) {
+        return userMapper.map(userService.authenticate(userMapper.map(user)));
     }
 
     @RequestMapping(value = "/register",
                     method = RequestMethod.POST)
-    public UserDO register(@RequestBody UserDO user) {
-        return userService.register(user);
+    public User register(@RequestBody User user) {
+        final UserDO registered = userService.register(userMapper.map(user));
+        return userMapper.map(registered);
     }
 }

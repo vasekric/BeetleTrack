@@ -4,6 +4,7 @@ import org.apache.tomcat.jdbc.pool.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Produces;
 import javax.inject.Named;
 
@@ -16,7 +17,6 @@ public class JdbcTemplateConfig {
 
     @Produces
     @Named
-    @ApplicationScoped
     public JdbcTemplate getJdbcTemplate() {
         final DataSource dataSource = new DataSource();
         dataSource.setDriverClassName("com.mysql.jdbc.Driver");

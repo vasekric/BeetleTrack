@@ -35,7 +35,7 @@ public class IssueRepositoryEJB implements IssueRepository {
     public void init() {
         jdbcIssueInsert = new SimpleJdbcInsert(jdbcTemplate)
                 .withTableName("Issue")
-                .usingColumns("DTYPE", "id", "description", "estimatedTime", "name", "type", "project_id", "parent_id", "assignedTo_id")
+                .usingColumns("DTYPE", "description", "estimatedTime", "name", "type", "project_id", "parent_id", "assignedTo_id")
                 .usingGeneratedKeyColumns("id");
         jdbcSpendTimeInsert = new SimpleJdbcInsert(jdbcTemplate)
                 .withTableName("SpendTime")

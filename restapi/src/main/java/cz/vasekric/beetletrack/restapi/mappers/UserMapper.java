@@ -29,4 +29,23 @@ public class UserMapper implements Mapper<UserDO, User> {
 
         return user;
     }
+
+    public UserDO map(User source) {
+        if(source == null) {
+            return null;
+        }
+        return UserDO.builder()
+                .id(source.id)
+                .username(source.username)
+                .fullName(source.fullName)
+                .email(source.email)
+                .build();
+    }
+
+    public List<UserDO> mapDO(List<User> source) {
+        if(source == null) {
+            return new ArrayList<>();
+        }
+        return source.stream().map(this::map).collect(Collectors.toList());
+    }
 }
